@@ -1,0 +1,2 @@
+"# TODo"  initgit add README.mdgit commit -m "first commit"git branch -M maingit remote add origin https://github.com/AsadAsh006/TODo.gitgit push -u origin main
+"# TODo"  initgit add README.mdgit commit -m "first commit"git branch -M maingit remote add origin https://github.com/AsadAsh006/TODo.gitgit push -u origin main
