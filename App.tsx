@@ -17,7 +17,7 @@ function App() {
 
   return (
     <NavigationContainer>
-<Stack.Navigator screenOptions={{headerShown:false}} initialRouteName='Dashboard'>
+<Stack.Navigator screenOptions={{headerShown:false}} initialRouteName='SignUp'>
   <Stack.Screen name='Date' component={DateTime}/>
   <Stack.Screen name='Camera' component={Camera}/>
 <Stack.Screen name="Login" component={Login}/>

@@ -1,89 +1,81 @@
-import { StyleSheet, Text, View , Button, TouchableOpacity} from 'react-native'
-import React, { useState } from 'react'
-import DatePicker from 'react-native-date-picker'
-import InputText from './InputText'
-import CustomButton from './CustomButton'
-import firestore from '@react-native-firebase/firestore';
-const DateTime = () => {
-    const [time, setSelectedTime] = useState(new Date())
-    const [date, setSelectedDate] = useState(new Date())
+import { StyleSheet, Text, View } from 'react-native'
+import React from 'react'
+
+const DateTime = (params) => {
+    const [task, setTask]= useState('')
+    const [time , setSelectedTime]=useState(new Date())
+    const [date , setSelectedDate]=useState(new Date())
     const [openTime, setOpenTime] = useState(false)
     const [open, setOpen] = useState(false)
-    const [dateTimeData, setDateTimeData] = useState([]);
-    const [task, setTask]=useState()
+    
     const handleDateSelection = (newDate) => {
-        setSelectedDate.toString(newDate);
-        setOpen(false);
-      };
-        
+      setSelectedDate(newDate);
+      setOpen(false);
+    };
+      
     
-      const handleTimeSelection = (newTime) => {
-        setSelectedTime(newTime);
-        setOpen(false);
-      };
-    
-      const handleDateTimeSelection = () => {
-        const formattedDateTime = `${date.toISOString().split('T')[0]} ${time.toTimeString().split(' ')[0]}`;
-        setDateTimeData([...dateTimeData, formattedDateTime]);
-      };
-
-    const addData=()=>{
-      firestore()
-  .collection('Users')
-  .add({
-    Time: time.toTimeString().split(' ')[0],
-    Date:date.toISOString().split('T')[0],
-    New:task,
-  })
-  .then(() => {
-    console.log('User added!');
-    navigation.navigate('Dashboard')
-  });
+    const handleTimeSelection = (newTime) => {
+      setSelectedTime.toString(newTime);
+      console.log(setSelectedTime)
+      setOpenTime(false);
+    };
+    const okay=()=>{
+    time.toLocaleTimeString().split(' ')[0];
+    console.log(time)
     }
+    
+    
+    useEffect(()=>{
+    
+      const userData =async()=>{
+        const users = await firestore().collection('Users').get();
+        const Newusers = users.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setData(Newusers)
+        return Newusers;
+      }
+      
+      userData()
+    },[])
+
   return (
-  <View style={{flex:1,backgroundColor:'ghostwhite'}}>
-    <InputText title={'Enter Task'} state={setTask} val={task}/>
+    <View style={{flex:1}}>
+    <TouchableOpacity style={{height:50,width:'90%', backgroundColor:"white", borderColor:"grey", alignSelf:'center', borderRadius:10, justifyContent:"center", margin:10}} onPress={()=>setOpenTime(true)} > 
+<Text style={{color:"black",fontSize:15, marginLeft:10}}>Selected Time: {time.toLocaleTimeString()} </Text>
+</TouchableOpacity>
 
-     <TouchableOpacity style={{height:50,width:'90%', backgroundColor:"white", borderColor:"grey", alignSelf:'center', borderRadius:10, justifyContent:"center", margin:10}} onPress={()=>setOpenTime(true)}> 
-    <Text style={{color:"black",fontSize:15, marginLeft:10}}>Selected Time: {time.toTimeString().split(' ')[0]} </Text>
-    </TouchableOpacity>
+<TouchableOpacity style={{height:50,width:'90%', backgroundColor:"white", borderColor:"grey", alignSelf:'center', borderRadius:10, justifyContent:"center", margin:10}} onPress={()=>setOpen(true)}> 
+<Text style={{color:"black",fontSize:15, marginLeft:10}}>Selected Date: {date.toLocaleDateString()}   </Text>
+</TouchableOpacity>
 
-    <TouchableOpacity style={{height:50,width:'90%', backgroundColor:"white", borderColor:"grey", alignSelf:'center', borderRadius:10, justifyContent:"center", margin:10}} onPress={()=>setOpen(true)}> 
-    <Text style={{color:"black",fontSize:15, marginLeft:10}}>Selected Date: {date.toISOString().split('T')[0]}   </Text>
-    </TouchableOpacity>
 
-    <CustomButton ButtonTitle={'Add to list'}  onPress={addData}/>
-  
-      <DatePicker
+<DatePicker
         modal
         mode='date'
-        open={open}
-        date={date}
+        open={params.DateOpen?params.DateOpen:null}
+        date={params.Date?params.Date:null}
         timeZoneOffsetInMinutes={new Date().getTimezoneOffset()}
         is24hourSource="locale"
-        onDateChange={handleDateSelection}
-        onConfirm={handleDateSelection}
-        onCancel={() => {
-          setOpen(false)
-        }}
+        onDateChange={params.handleDate?params.handleDate:null}
+        onConfirm={params.handleDate?params.handleDate:null}
+        onCancel={params.cancelDate?cancelDate:null}
       />
 
       <DatePicker
         modal
         mode='time'
-        open={openTime}
-        date={time}
+        open={params.OpenTime?params.OpenTime:null}
+        date={params.Time?params.Time:null}
         is24hourSource="locale"
-        onDateChange={handleTimeSelection}
-        onConfirm={handleTimeSelection}
+        onDateChange={params.handleTime?params.handleTime:null}
+        onConfirm={params.handleTime?params.handleTime:null}
       
-        onCancel={() => {
-          setOpenTime(false)
-        }}
+        onCancel={params.cancelTime?cancelTime:null}
         
       />
-   </View>
- 
+    </View>
   )
 }
 

@@ -10,12 +10,14 @@ const InputText = (params) => {
       onChangeText={(val)=>params.state ? params.state(val) : null}
       value={params.val?params.val :null}
       style={{
+      marginTop:params.topMargin?params.topMargin:null,
+
         color:'black',
         backgroundColor: params.bgcolor? params.bgcolor :'white',
         marginStart:15,
         marginEnd:15,
         // width:'90%',
-        padding:10,
+        padding:9,
         // height:4,
         margin:5,
         borderRadius:10

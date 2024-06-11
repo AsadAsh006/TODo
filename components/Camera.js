@@ -4,6 +4,7 @@ import { launchImageLibrary } from 'react-native-image-picker'
 import { launchCamera } from 'react-native-image-picker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import CustomButton from './CustomButton'
 const Camera = (params) => {
   const [cameraModal, setCameraModal] = useState(false)
   useEffect(() => {
@@ -69,16 +70,20 @@ const Camera = (params) => {
   }
 
   return (
-    <View style={{ backgroundColor: 'white', flex: 0.5, }}>
+    <View style={{ backgroundColor: 'white', height:100, width:100, marginTop: 20,borderRadius:10,}}>
       <Modal
         transparent={true}
         visible={cameraModal}
         onRequestClose={() => setCameraModal(false)}
         animationType='slide'
       >
-        <Button title="Choose from Device" onPress={openImagePicker} />
-        <Button title="Open Camera" onPress={handleCameraLaunch} />
-
+        <View style={{ flex:1, backgroundColor:'rgba(50,50,50,0.2)', justifyContent:'center',padding:20, }}>
+        <View style={{flex:0.3, backgroundColor:'ghostwhite', justifyContent:'center', borderRadius:20}}>
+          <CustomButton ButtonTitle={"Choose from Device"} action={openImagePicker} bRadius={20}/>
+          <CustomButton ButtonTitle={"Open Camera"} action={handleCameraLaunch} bRadius={20}/>
+          <CustomButton ButtonTitle={'Cancel'} action={()=>setCameraModal(false)} bRadius={20}/>
+        </View>
+        </View>
       </Modal>
       <View style={{ backgroundColor: 'white', }}>
         <TouchableOpacity onPress={() => setCameraModal(true)}>
@@ -86,8 +91,7 @@ const Camera = (params) => {
             <Image style={{alignItems:'center',position:'absolute', justifyContent:"center", alignSelf:'center', borderRadius:75, height:150, width:150,backgroundColor:'white', }} source={{ uri: selectedimage }} />
             :
             <MaterialIcon name='add' color={'grey'} size={90} style={{ alignSelf: 'center', }} />
-
-          }
+}
         </TouchableOpacity>
       </View>
     </View>

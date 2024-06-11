@@ -8,15 +8,18 @@ const CustomButton = (params, {navigation}, onPress) => {
     <TouchableOpacity 
     onPress={params.action}
     style={{
-    height:40,
-    width:'55%',
+    marginTop:params.topMargin?params.topMargin:null,
+    height:params.Height? params.Height :40,
+    width:params.Width ? params.Width :'55%',
     backgroundColor:'teal',
     alignItems:'center',
-    margin:10,
-   justifyContent:'center'
+    margin:params.Margin? params.Margin : 5,
+    marginLeft:10,
+   justifyContent:'center',
+   borderRadius:params.bRadius? params.bRadius:null
     }}>
       
-        <Text style={{color:'white', fontSize:16,fontWeight:400,}}>
+        <Text style={{color:'white', fontSize:params.TextSize? params.TextSize: 16,fontWeight:600,alignItems:'center'}}>
           {params.ButtonTitle}
         </Text>
     </TouchableOpacity>

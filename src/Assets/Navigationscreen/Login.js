@@ -84,7 +84,7 @@
 
 
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState , useEffect} from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import InputText from '../../../components/InputText'
 import LeftColor from '../../../components/LeftColor'
@@ -95,7 +95,18 @@ const Login = ({navigation}) => {
   const [email,setEmail]= useState('')
   const [password, setPassword]= useState('')
 
-  
+
+
+const checkUserAuth = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = auth().onAuthStateChanged((user) => {
+      unsubscribe();
+      resolve(user);
+    }, reject);
+  });
+};
+
+
  
    const handleLogin=()=>{
 console.log(email)
@@ -123,27 +134,28 @@ console.log(email)
   return (
 
     <View style={{flex:1, backgroundColor:'whitesmoke', }}>
-     <LeftColor/>
-
-<Text style={{textAlign:'center', color:'black', fontWeight:600, fontSize:26}}> 
+     <LeftColor action={()=>navigation.navigate('Home')}/>
+<Text style={{textAlign:'center', color:'black', fontWeight:400, fontSize:26}}> 
   Welcome Back!
 </Text>
 
 <View>
 <Image source={require('../Images/me.png',)} style={{alignSelf:'center', margin:13}}/>
-<InputText title={'Enter your Email Address'} state={setEmail} val={email}/>
-<InputText title={'Enter Your Password'} state={setPassword} val={password} />
 
-<Text style={{color:'teal',fontSize:15, alignSelf:'center', padding:15}}>Forgot Password ?</Text>
+<InputText title={'Enter your Email address'} state={setEmail} val={email}/>
+<InputText title={'Confirm Password'} state={setPassword} val={password} topMargin={20} />
+<TouchableOpacity>
+<Text style={{color:'teal',fontSize:15, alignSelf:'center', padding:35}}>Forgot Password ?</Text>
+</TouchableOpacity>
 <CustomButton ButtonTitle={'Login'} action={handleLogin}/>
-
-<View style={{ flexDirection:'row',justifyContent:'flex-end',alignItems:'flex-end' }}>
+<View style={{alignItems:'center',justifyContent:'flex-end', marginTop:20}}>
+<View style={{ flexDirection:'row',justifyContent:"flex-end"}}>
 <Text style={{color:'black'}}>Don't have an account ?</Text>
 <TouchableOpacity onPress={()=>navigation.navigate('SignUp')}>
 <Text style={{color:'teal'}}> Sign Up</Text>
 </TouchableOpacity>
 </View>
-
+</View>
 </View>
 
 
